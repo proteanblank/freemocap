@@ -1,11 +1,16 @@
-from PyQt6.QtGui import QAction, QDesktopServices
 from PyQt6.QtCore import QUrl
+from PyQt6.QtGui import QAction, QDesktopServices
 
+from freemocap.system.paths_and_filenames.file_and_folder_names import FIGSHARE_SAMPLE_ZIP_FILE_URL, \
+    FIGSHARE_TEST_ZIP_FILE_URL
 
 CREATE_NEW_RECORDING_ACTION_NAME = "New Recording"
 LOAD_MOST_RECENT_RECORDING_ACTION_NAME = "Load Most Recent Recording"
 LOAD_RECORDING_ACTION_NAME = "Load Recording"
 IMPORT_VIDEOS_ACTION_NAME = "Import Videos"
+DOWNLOAD_SAMPLE_DATA_ACTION_NAME = "Download Sample Data (3 cameras, ~1000 frames)"
+DOWNLOAD_TEST_DATA_ACTION_NAME = "Download Test Data (3 cameras, ~200 frames)"
+RESET_TO_DEFAULTS_ACTION_NAME = "Reset to Default GUI Settings"
 KILL_THREADS_AND_PROCESSES_ACTION_NAME = "Kill Threads and Processes"
 REBOOT_GUI_ACTION_NAME = "Reboot GUI"
 EXIT_ACTION_NAME = "Exit"
@@ -39,6 +44,17 @@ class Actions:
         self.import_videos_action.setShortcut("Ctrl+I")
         self.import_videos_action.triggered.connect(freemocap_main_window.open_import_videos_dialog)
 
+        self.download_sample_data_action = QAction(DOWNLOAD_SAMPLE_DATA_ACTION_NAME, parent=freemocap_main_window)
+        self.download_sample_data_action.triggered.connect(
+            lambda: freemocap_main_window.download_data(download_url=FIGSHARE_SAMPLE_ZIP_FILE_URL))
+
+        self.download_test_data_action = QAction(DOWNLOAD_TEST_DATA_ACTION_NAME, parent=freemocap_main_window)
+        self.download_test_data_action.triggered.connect(
+            lambda: freemocap_main_window.download_data(download_url=FIGSHARE_TEST_ZIP_FILE_URL))
+
+        self.reset_to_defaults_action = QAction(RESET_TO_DEFAULTS_ACTION_NAME, parent=freemocap_main_window)
+        self.reset_to_defaults_action.triggered.connect(freemocap_main_window.reset_to_default_gui_settings)
+
         self.reboot_gui_action = QAction(REBOOT_GUI_ACTION_NAME, parent=freemocap_main_window)
         self.reboot_gui_action.setShortcut("Ctrl+R")
         self.reboot_gui_action.triggered.connect(freemocap_main_window.reboot_gui)
@@ -57,10 +73,14 @@ class Actions:
 
         # Help
         self.open_docs_action = QAction(OPEN_DOCS_ACTION_NAME, parent=freemocap_main_window)
-        self.open_docs_action.triggered.connect(lambda: QDesktopServices.openUrl(QUrl("https://freemocap.readthedocs.io/en/latest/")))
-        
+        self.open_docs_action.triggered.connect(
+            lambda: QDesktopServices.openUrl(QUrl("https://freemocap.github.io/documentation/"))
+        )
+
         self.freemocap_foundation_action = QAction(FREEMOCAP_FOUNDATION_ACTION_NAME, parent=freemocap_main_window)
-        self.freemocap_foundation_action.triggered.connect(lambda: QDesktopServices.openUrl(QUrl("https://freemocap.org/about-us.html")))
+        self.freemocap_foundation_action.triggered.connect(
+            lambda: QDesktopServices.openUrl(QUrl("https://freemocap.org/about-us.html"))
+        )
 
         # # Navigation
         # show_camera_control_panel_action = QAction("&1 - Show Camera Control Panel", parent=main_window)
@@ -76,6 +96,8 @@ class Actions:
         #
         # Support
         self.donate_action = QAction(DONATE_ACTION_NAME, parent=freemocap_main_window)
-        self.donate_action.triggered.connect(lambda: QDesktopServices.openUrl(QUrl("https://freemocap.org/about-us.html#donate")))
+        self.donate_action.triggered.connect(
+            lambda: QDesktopServices.openUrl(QUrl("https://freemocap.org/about-us.html#donate"))
+        )
         # self.send_usage_statistics_action = QAction("Send &User Statistics", parent=freemocap_main_window)
         # self.user_survey_action = QAction("&User Survey", parent=freemocap_main_window)

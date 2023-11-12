@@ -24,12 +24,15 @@ class AniposeCalibrationThreadWorker(QThread):
         calibration_videos_folder_path: Union[str, Path],
         charuco_square_size: Union[int, float],
         kill_thread_event: threading.Event,
-        charuco_board_definition: CharucoBoardDefinition = CharucoBoardDefinition(),
+        charuco_board_definition: CharucoBoardDefinition = None,
     ):
         super().__init__()
         logger.info(
             f"Initializing Anipose Calibration Thread Worker for videos in path {calibration_videos_folder_path}"
         )
+        if charuco_board_definition is None:
+            charuco_board_definition = CharucoBoardDefinition()
+
         self._kill_thread_event = kill_thread_event
         self._charuco_board_definition = charuco_board_definition
         self._charuco_square_size = charuco_square_size
@@ -48,8 +51,6 @@ class AniposeCalibrationThreadWorker(QThread):
         logger.info("Beginning Anipose calibration with Charuco Square Size (mm): {}".format(self._charuco_square_size))
 
         try:
-
-
             run_anipose_capture_volume_calibration(
                 charuco_board_definition=self._charuco_board_definition,
                 charuco_square_size=self._charuco_square_size,
@@ -57,8 +58,6 @@ class AniposeCalibrationThreadWorker(QThread):
                 pin_camera_0_to_origin=True,
                 progress_callback=self._emit_in_progress_data,
             )
-
-
 
         except Exception as e:
             logger.exception("something went wrong in the anipose calibration")
@@ -68,4 +67,3 @@ class AniposeCalibrationThreadWorker(QThread):
         self._work_done = True
 
         logger.info("Anipose Calibration Complete")
-

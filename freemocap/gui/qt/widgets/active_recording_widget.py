@@ -6,10 +6,10 @@ from PyQt6.QtCore import pyqtSignal, QFileSystemWatcher
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget
 from pyqtgraph.parametertree import Parameter, ParameterTree
 
-from freemocap.parameter_info_models.recording_info_model import (
+from freemocap.data_layer.recording_models.recording_info_model import (
     RecordingInfoModel,
 )
-from freemocap.system.paths_and_files_names import get_most_recent_recording_path
+from freemocap.system.paths_and_filenames.path_getters import get_most_recent_recording_path
 
 logger = logging.getLogger(__name__)
 
@@ -84,7 +84,6 @@ class ActiveRecordingInfoWidget(QWidget):
         self._directory_watcher.addPath(folder_to_watch)
 
     def _create_directory_watcher(self):
-
         directory_watcher = QFileSystemWatcher()
         directory_watcher.fileChanged.connect(self._handle_directory_changed)
         directory_watcher.directoryChanged.connect(self._handle_directory_changed)

@@ -1,14 +1,14 @@
 import logging
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QTabWidget, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QTabWidget, QVBoxLayout, QWidget, QLabel
+
 # from skelly_viewer import SkellyViewer
 from skellycam import SkellyCamWidget
 
 from freemocap.gui.qt.widgets.home_widget import (
     HomeWidget,
 )
-from freemocap.system.paths_and_files_names import CAMERA_WITH_FLASH_EMOJI_STRING, EYES_EMOJI_STRING
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +61,7 @@ class CentralTabWidget(QTabWidget):
         self._camera_view_layout = QVBoxLayout()
         self._camera_view_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         dummy_widget.setLayout(self._camera_view_layout)
-        tab_widget.addTab(dummy_widget, f"Cameras")
+        tab_widget.addTab(dummy_widget, "Cameras")
         # tab_widget.setToolTip(skellycam.__repo_url__)
 
         # self._qt_multi_camera_viewer_widget.resize(1280, 720)
@@ -69,16 +69,25 @@ class CentralTabWidget(QTabWidget):
 
         self._camera_view_layout.addWidget(self._skelly_cam_widget)
 
+        lag_note_label = QLabel(
+            "NOTE: If you experience lag in your camera views, decrease the resolution and/or use fewer cameras. The frames are likely being being recorded properly, its just the viewer that is lagging. A fix is incoming soon!"
+        )
+        lag_note_label.setStyleSheet("font-size: 10px;")
+        lag_note_label.setWordWrap(True)
+        layout = QVBoxLayout()
+        layout.addWidget(lag_note_label)
+        layout.setAlignment(Qt.AlignmentFlag.AlignBottom)
+        self._camera_view_layout.addLayout(layout)
+
     def _create_skelly_viewer_tab(self, tab_widget: QTabWidget):
         logger.info("Creating export_data tab")
-        tab_widget.addTab(self._skelly_viewer_widget, f"Data Viewer")
+        tab_widget.addTab(self._skelly_viewer_widget, "Data Viewer")
         # tab_widget.setToolTip(skelly_viewer.__repo_url__)
 
     def _create_directory_view_tab(self, tab_widget: QTabWidget):
         logger.info("Creating directory view tab")
-        tab_widget.addTab(self._directory_view_widget, f"Directory View")
+        tab_widget.addTab(self._directory_view_widget, "Directory View")
 
     def _create_active_recording_info_tab(self, tab_widget: QTabWidget):
         logger.info("Creating active recording info tab")
-        tab_widget.addTab(self._active_recording_info_widget, f"Active Recording Info")
-
+        tab_widget.addTab(self._active_recording_info_widget, "Active Recording Info")

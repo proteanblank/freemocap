@@ -1,7 +1,8 @@
 from pathlib import Path
+from typing import Union
 
 
-def get_video_paths(path_to_video_folder: Path) -> list:
+def get_video_paths(path_to_video_folder: Union[str, Path]) -> list:
     """Search the folder for 'mp4' files (case insensitive) and return them as a list"""
 
     list_of_video_paths = list(Path(path_to_video_folder).glob("*.mp4")) + list(
@@ -15,6 +16,6 @@ def get_video_paths(path_to_video_folder: Path) -> list:
 def get_unique_list(list: list) -> list:
     """Return a list of the unique elements from input list"""
     unique_list = []
-    [unique_list.append(clip) for clip in list if clip not in unique_list]
+    [unique_list.append(element) for element in list if element not in unique_list]
 
     return unique_list
